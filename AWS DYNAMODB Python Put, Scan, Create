@@ -1,0 +1,127 @@
+import boto3
+import decimal
+from boto3.dynamodb.conditions import Key, Attr
+from botocore.exceptions import ClientError
+
+client = boto3.client('dynamodb')
+        
+dynamodb = boto3.resource('dynamodb')
+
+#function for menu
+def menu():
+    print("----- COURSE PROGRAM -----")
+    print("1: Create course database")
+    print("2. Add a course")
+    print("3: View courses")
+    print("4: Exit")
+    
+#function for creating table
+def option1():
+    dynamodb = boto3.resource('dynamodb')
+
+
+    table = dynamodb.create_table(
+        TableName='Courses',
+        KeySchema=[
+            {
+            'AttributeName': 'course_id',
+            'KeyType': 'HASH'  #Partition key
+            }
+        ],
+        AttributeDefinitions=[
+        {
+            'AttributeName': 'course_id',
+            'AttributeType': 'N'
+        },
+
+        ],
+        ProvisionedThroughput={
+        'ReadCapacityUnits': 10,
+        'WriteCapacityUnits': 10
+        }
+        )
+
+    print("Table status:", table.table_status)
+
+#function to add items to table
+def option2():
+    table = dynamodb.Table('Courses')
+        
+    #attributes
+    course_id = input("Enter Course ID: ")
+    if course_id == None:
+        course_id= input("Must Enter Course ID: ")
+    title = input("Enter Title: ")
+    if title == None:
+        title= input("Must Enter Title: ")
+    subject = input("Enter Subject: ")
+    if subject == None:
+        subject= input("Must Enter Subject: ")
+    catalognbr = input("Enter CatalogNbr: ")
+    if catalognbr == None:
+        catalognbr= input("Must Enter CatalogNbr: ")
+    numcredits = input("Enter NumCredits: ")
+    if numcredits == None:
+        numcredits= input("Must Enter NumCredits: ")
+        
+    
+    response = table.put_item(
+        Item={
+                'course_id': int(course_id),
+                'subject': subject,
+                'title': title,
+                'catalognbr': int(catalognbr),
+                'numcredits': int(numcredits)
+                
+            }
+        )
+    print("Item added.")
+    
+# function to scan items in table
+def option3():
+    table = dynamodb.Table('Courses')
+    
+    # attributes
+    subject = input("Enter subject: ")
+    catalognbr = input("Enter CatalogNbr: ")
+
+    response = table.scan(
+        FilterExpression=Attr('subject').eq(subject) & Attr('catalognbr').eq(int(catalognbr))
+    )
+    #display results
+    for x in response['Items']:
+        print(x)
+    
+menu()
+
+choice = input("\nWhich option do you choose?: ")
+    
+while choice != "4":
+    
+    
+    if choice == "1":
+
+        option1()
+        continue
+    
+    if choice == "2":
+        option2()
+        stay = input("Want to add more? (Y/N): ")
+        if stay == "Y":
+            continue
+        else:
+            print("Goodbye.")
+            break
+    
+    if choice == "3":
+        option3()
+        stay = input("Want to search more? (Y/N): ")
+        if stay == "Y":
+            continue
+        else:
+            print("Goodbye.")
+            break
+        
+
+    if choice == "4":
+        print("Goodbye")
