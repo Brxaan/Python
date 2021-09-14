@@ -1,0 +1,135 @@
+import boto3
+import math
+import random
+import logging
+import datetime
+
+print("Welcome to S3. Please make a selection. ")
+print("1: View current buckets")
+print("2: Create a new bucket")
+print("3: Put object in previous bucket")
+print("4: Delete bucket")
+print("5: Copy object")
+print("6: Download object")
+print("7: Delete object from bucket")
+print("8: Exit")
+
+def one(): #display list
+    # Create an S3 client
+    s3 = boto3.client('s3')
+
+    # Call S3 to list current buckets
+    response = s3.list_buckets()
+
+    # Get a list of all bucket names from the response
+    buckets = [bucket['Name'] for bucket in response['Buckets']]
+
+    # Print out the bucket list
+    print("Bucket List: %s" % buckets)
+
+def two(): # create new bucket
+    digits = random.randint(100000, 999999) #selects random number with 6 digits
+    
+    fname = input("What is your first name? ")
+    lname = input("What is your last name? ")
+    s3 = boto3.client('s3')
+
+    s3.create_bucket(Bucket = fname + lname + str(digits))
+    print(fname + lname + str(digits) + " bucket added.")
+
+def three(): # put object in previous bucket
+    s3 = boto3.client('s3')
+    response = s3.list_buckets()
+    buckets = [bucket['Name'] for bucket in response['Buckets']]
+    print("Bucket List: %s" % buckets)
+    
+    key = 'abcd.txt'
+    
+    bucket = input("Which bucket do you want to use?: ")
+    
+    s3.put_object(Body="hello", Bucket=bucket, Key=key)
+    
+    print(key + " has been added to " + bucket)
+
+def four(): # delete bucket
+    s3 = boto3.client('s3')
+    list = s3.list_buckets()
+    buckets = [bucket['Name'] for bucket in list['Buckets']]
+    print("Bucket List: %s" % buckets)
+    
+    pick = input("Which bucket would you like to delete?: ")
+    bucket = pick
+    
+    response = s3.delete_bucket(Bucket=bucket)
+    print(pick + " is deleted")
+    
+def five(): #object copy
+    s3 = boto3.resource('s3')
+    
+    bucket = input("Which bucket do you want to use?: ")
+    key = input("Which file do you want to copy?: ")
+    bucket2 = input("Which bucket do you want to put copy in?: ")
+    
+    copy_source = { #copy this infomration
+        'Bucket': bucket,
+        'Key': key
+    }
+    
+    bucket = s3.Bucket(bucket2)
+    bucket.copy(copy_source, 'abcd.txt')
+    print(key + " has been copied to " + bucket2)
+
+def six(): #download object
+    bucket = input("Which bucket?: ")
+    key = input("Which file?: ")
+
+    s3 = boto3.resource('s3')
+
+    
+    s3.Bucket(bucket).download_file(key, 'download_file')
+    
+    print("File downloaded.")
+    
+def seven(): #remove object from bucket
+    bucket = input("Which bucket?: ")
+    key = input("Which file?: ")
+    
+    s3 = boto3.resource('s3')
+    
+    s3.Object(bucket, key).delete() # deleting object from bucket
+    print(key + " is deleted")
+
+    
+def eight(): #exit
+    print("Exitting.")
+    today = datetime.datetime.now() #time and date
+    print(today)
+
+
+
+option = int(input())
+
+if option == 1:
+    one()
+    
+elif option == 2:
+    two()
+    
+elif option == 3:
+    three()
+    
+elif option == 4:
+    four()
+
+elif option == 5:
+    five()
+    
+elif option == 6:
+    six()
+    
+elif option == 7:
+    seven()
+    
+elif option == 8:
+    eight()
+    
