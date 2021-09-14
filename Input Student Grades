@@ -1,0 +1,23 @@
+# Student Names
+
+students = ["Claire", "Robbie", "Matt", "Lois", "Michelle"]
+for student in students:
+    print("Student:", student)
+
+# Determine Student Grades
+
+Claire = eval(input("Quiz grade for Claire: "))
+Robbie = eval(input("Quiz grade for Robbie: "))
+Matt = eval(input("Quiz grade for Matt: "))
+Lois = eval(input("Quiz grade for Lois: "))
+Michelle = eval(input("Quiz grade for Michelle: "))
+
+# Determine Average Grade
+
+grade = Claire, Robbie, Matt, Lois, Michelle
+total = Claire + Robbie + Matt + Lois + Michelle
+print("Average Grade:", total // 5)
+
+# Determine Highest Grade
+
+print("Highest Grade:", max(grade))
