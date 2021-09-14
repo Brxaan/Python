@@ -1,0 +1,48 @@
+# Determine the age and type of movie // A - Age, T - Type
+
+A = eval(input("What is your age: "))
+
+T = (input("Do you want 3D? "))
+
+# Determine the age category // A>16andA<55 - Adult, A<16 - Child, A>55 - Senior
+
+if A > 16 and A < 55:
+    print('Adult')
+
+elif A < 16:
+    print('Child')
+
+elif A > 55:
+    print('Senior')
+
+# Determine if 3D // 3D-$5, No 3D-$0
+
+if T == 'Yes':
+    print('$5 upcharge')
+
+else:
+    print('No upcharge')
+
+Adult = input
+Child = input
+Senior = input
+
+# Determine price
+
+Adult 
+if A > 16 and A < 55 and T == 'No':
+    print('$15')
+elif A > 16 and A < 55 and T == 'Yes':
+    print('$20')
+
+Child
+if A < 16 and T == 'No':
+    print('$5')
+elif A < 16 and T == 'Yes':
+    print('$10')
+
+Senior
+if A > 55 and T == 'No':
+    print('$10')
+elif A > 55 and T == 'Yes':
+    print('$15')
