@@ -1,0 +1,32 @@
+#Establish temp list
+
+temp = []
+
+#Begin Question Sequence
+
+C = float(eval(input("Input The Temperature In Celsius For The Next Ten Days. (Enter -1 when done): ")))
+while (C != -1):
+    temp.append(C)
+    C = float(eval(input("Input The Temperature In Celsius For The Next Ten Days. (Enter -1 when done): ")))
+
+print()
+print()
+print()
+print(temp, 'In Celsius')
+
+#Translate to Fahrenheit
+
+for i in range(len(temp)):
+    temp[i] = temp[i] * 1.8 + 32
+print(temp, 'In Fahrenheit')
+
+#Generate number of cold, warm, and hot days
+
+x = [x for x in temp if x <= 40]
+print('These are the', len(x), 'cold days')
+    
+a = [x for x in temp if x >= 70]
+print('These are the', len(a), 'hot days')
+
+r = [x for x in temp if x >= 39 and x <= 69]
+print('These are the', len(r), 'warm days')
